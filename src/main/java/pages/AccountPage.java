@@ -3,7 +3,6 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 
@@ -20,7 +19,7 @@ public class AccountPage extends BasePage {
     private final static By mrGender = By.id("id_gender1");
     private final static By nameArea = By.id("customer_firstname");
     private final static By surnameArea = By.id("customer_lastname");
-    private final static By emailAreaOnForm  = By.xpath("//input[@id = 'email']");
+    private final static By emailAreaOnForm = By.xpath("//input[@id = 'email']");
     private final static By passwordArea = By.xpath("//input[@type = 'password']");
     private final static By daysArea = By.id("uniform-days");
     private final static By monthArea = By.id("uniform-months");
@@ -41,7 +40,9 @@ public class AccountPage extends BasePage {
     private final static By aliasArea = By.id("alias");
     private final static By accountSubmitButton = By.id("submitAccount");
     private final static By accountCategories = By.xpath("//ul[@class ='myaccount-link-list']/li");
-
+    private final static By accountLabel = By.xpath("//a[@class = 'account']");
+    private final static By productCategoryList = By.xpath("//ul[@class = 'sf-menu clearfix menu-content sf-js-enabled sf-arrows']/li");
+    private final static By totalPriceOnHistory = By.xpath("//td[@class = 'history_price']/span");
 
 
     public void checkUrl() {
@@ -51,15 +52,15 @@ public class AccountPage extends BasePage {
 
     public void enterEmail(String emailText) {
         waitUntilVisible(email);
-        waitUntilClickable(email);
-        sendKey(email,emailText);
+        waitUntilClickableAndClick(email);
+        sendKey(email, emailText);
         waitForLoad();
     }
 
     public void clickSubmitButton() {
 
         waitUntilVisible(createAccountButton);
-        waitUntilClickable(createAccountButton);
+        waitUntilClickableAndClick(createAccountButton);
         waitForLoad();
     }
 
@@ -67,57 +68,56 @@ public class AccountPage extends BasePage {
         waitUntilVisible(formTitles);
         Assert.assertEquals("YOUR PERSONAL INFORMATION", getWebElements(formTitles).get(0).getText());
         Assert.assertEquals("YOUR ADDRESS", getWebElements(formTitles).get(1).getText());
+        waitForLoad();
     }
 
     public void selectGender(String gender) {
-        if(gender.equalsIgnoreCase("Mrs.")) {
-            waitUntilVisible(mrsGender);
-            waitUntilClickable(mrsGender);
-        }
-        else {
-            waitUntilVisible(mrGender);
-            waitUntilClickable(mrGender);
-        }
+        waitForLoad();
+        if (gender.equalsIgnoreCase("Mrs."))
+            actionClick(mrsGender);
+        else
+            actionClick(mrGender);
+
 
     }
 
     public void enterName(String name) {
 
-        waitUntilClickable(nameArea);
-        sendKey(nameArea,name);
+        waitUntilClickableAndClick(nameArea);
+        sendKey(nameArea, name);
         waitForLoad();
     }
 
     public void enterSurname(String surname) {
 
-        waitUntilClickable(surnameArea);
-        sendKey(surnameArea,surname);
+        waitUntilClickableAndClick(surnameArea);
+        sendKey(surnameArea, surname);
         waitForLoad();
     }
 
     public void checkEmailAlreadyEntered(String email) {
-       waitUntilClickable(emailAreaOnForm);
-       Assert.assertEquals(email,  getAttribute(emailAreaOnForm,"value"));
+        waitUntilClickableAndClick(emailAreaOnForm);
+        Assert.assertEquals(email, getAttribute(emailAreaOnForm, "value"));
     }
 
     public void enterPassword(int password) {
         waitUntilVisible(passwordArea);
-        waitUntilClickable(passwordArea);
-        sendKey(passwordArea,String.valueOf(password));
+        waitUntilClickableAndClick(passwordArea);
+        sendKey(passwordArea, String.valueOf(password));
         waitForLoad();
     }
 
     public void entersBirthday(String birthday) {
 
-        String[] respList = birthday.split("\\.");
-        String day = respList[0].trim();
-        String month = respList[1].trim();
-        String year = respList[2].trim();
+        String[] birthdayList = birthday.split("\\.");
+        String day = birthdayList[0].trim();
+        String month = birthdayList[1].trim();
+        String year = birthdayList[2].trim();
 
-        if(day.startsWith("0"))
-            day = day.substring(1,2);
-        if(month.startsWith("0"))
-            month =month.substring(1,2);
+        if (day.startsWith("0"))
+            day = day.substring(1, 2);
+        if (month.startsWith("0"))
+            month = month.substring(1, 2);
 
         enterDay(day);
         enterMonth(month);
@@ -128,101 +128,167 @@ public class AccountPage extends BasePage {
 
         waitUntilVisible(daysArea);
         actionClick(daysArea);
-        selectElementBySelectValue(daysOfBirth,day);
+        selectElementBySelectValue(daysOfBirth, day);
     }
 
     private void enterMonth(String month) {
         waitUntilVisible(monthArea);
         actionClick(monthArea);
-        selectElementBySelectValue(monthsOfBirth,month);
+        selectElementBySelectValue(monthsOfBirth, month);
     }
 
     private void enterYear(String year) {
         waitUntilVisible(yearsArea);
         actionClick(yearsArea);
-        selectElementBySelectValue(yearsOfBirth,year);
+        selectElementBySelectValue(yearsOfBirth, year);
 
     }
 
     public void checkNameAlreadyEntered(String name) {
-        findAndScrollElement(firsNameOnAddressArea,10);
+        findAndScrollElement(firsNameOnAddressArea, 10);
         waitUntilVisible(firsNameOnAddressArea);
-        waitUntilClickable(firsNameOnAddressArea);
-        Assert.assertEquals(name,  getAttribute(firsNameOnAddressArea,"value"));
+        waitUntilClickableAndClick(firsNameOnAddressArea);
+        Assert.assertEquals(name, getAttribute(firsNameOnAddressArea, "value"));
     }
 
     public void checkSurnameAlreadyEntered(String surname) {
-        findAndScrollElement(lastNameOnAddressArea,10);
+        findAndScrollElement(lastNameOnAddressArea, 10);
         waitUntilVisible(lastNameOnAddressArea);
-        waitUntilClickable(lastNameOnAddressArea);
-        Assert.assertEquals(surname,  getAttribute(lastNameOnAddressArea,"value"));
+        waitUntilClickableAndClick(lastNameOnAddressArea);
+        Assert.assertEquals(surname, getAttribute(lastNameOnAddressArea, "value"));
     }
 
     public void enterAddress(String address) {
         waitUntilVisible(addressArea);
-        waitUntilClickable(addressArea);
-        sendKey(addressArea,address);
+        waitUntilClickableAndClick(addressArea);
+        sendKey(addressArea, address);
         waitForLoad();
     }
 
     public void enterCity(String cityName) {
         waitUntilVisible(cityArea);
-        findAndScrollElement(lastNameOnAddressArea,10);
-        waitUntilClickable(cityArea);
-        sendKey(cityArea,cityName);
+        findAndScrollElement(lastNameOnAddressArea, 10);
+        waitUntilClickableAndClick(cityArea);
+        sendKey(cityArea, cityName);
         waitForLoad();
     }
 
     public void selectState(int stateNumber) {
         waitUntilVisible(stateArea);
-        findAndScrollElement(stateArea,10);
+        findAndScrollElement(stateArea, 10);
         actionClick(stateArea);
-        selectElementBySelectValue(selectState,String.valueOf(stateNumber));
+        selectElementBySelectValue(selectState, String.valueOf(stateNumber));
     }
 
     public void enterZipCode(String zip) {
 
         waitUntilVisible(zipCodeArea);
-        findAndScrollElement(zipCodeArea,10);
-        waitUntilClickable(zipCodeArea);
-        sendKey(zipCodeArea,zip);
+        findAndScrollElement(zipCodeArea, 10);
+        waitUntilClickableAndClick(zipCodeArea);
+        sendKey(zipCodeArea, zip);
         waitForLoad();
     }
 
     public void selectCountry() {
         waitUntilVisible(countryArea);
-        findAndScrollElement(countryArea,10);
+        findAndScrollElement(countryArea, 10);
         actionClick(countryArea);
-        selectElementBySelectValue(selectCountry,String.valueOf(21));
+        selectElementBySelectValue(selectCountry, String.valueOf(21));
     }
 
     public void enterPhoneNumber(String mobilePhone) {
         waitUntilVisible(mobilePhoneArea);
-        findAndScrollElement(mobilePhoneArea,10);
-        waitUntilClickable(mobilePhoneArea);
-        sendKey(mobilePhoneArea,mobilePhone);
+        findAndScrollElement(mobilePhoneArea, 10);
+        waitUntilClickableAndClick(mobilePhoneArea);
+        sendKey(mobilePhoneArea, mobilePhone);
         waitForLoad();
     }
 
     public void enterAliasAddress(String aliasAdress) {
         waitUntilVisible(aliasArea);
-        findAndScrollElement(aliasArea,10);
-        waitUntilClickable(aliasArea);
-        sendKey(aliasArea,aliasAdress);
+        findAndScrollElement(aliasArea, 10);
+        waitUntilClickableAndClick(aliasArea);
+        sendKey(aliasArea, aliasAdress);
         waitForLoad();
     }
 
     public void clickAccountFormSubmitButton() {
         waitUntilVisible(accountSubmitButton);
-        waitUntilClickable(accountSubmitButton);
+        waitUntilClickableAndClick(accountSubmitButton);
         waitForLoad();
     }
 
     public void checkAccountCategories() {
         waitForLoad();
         waitUntilUrlContains(properties.getProperty("loginAccountUrl"));
-        for(WebElement element: getWebElements(accountCategories))
-               isElementPresent(element);
+        for (WebElement element : getWebElements(accountCategories))
+            isElementPresent(element);
 
+    }
+
+    public void checkAccountHasAlreadySignedIn(String name, String surname) {
+        waitForLoad();
+        waitUntilVisible(accountLabel);
+        String labelText = name + " " + surname;
+        Assert.assertEquals(labelText, getText(accountLabel));
+    }
+
+    public void selectProductCategory(String categoryName) {
+        waitForLoad();
+
+        for (WebElement element : getWebElements(productCategoryList))
+            waitUntilVisible(element);
+
+        switch (categoryName) {
+            case "women":
+                waitUntilClickableAndClick(getWebElements(productCategoryList).get(0));
+                break;
+            case "dresses":
+                waitUntilClickableAndClick(getWebElements(productCategoryList).get(1));
+                break;
+            case "t-shirts":
+                waitUntilClickableAndClick(getWebElements(productCategoryList).get(2));
+                break;
+
+        }
+        waitForLoad();
+    }
+
+    public void clickAccountCategory(String categoryName) {
+        waitForLoad();
+
+        for (WebElement element : getWebElements(accountCategories))
+            waitUntilVisible(element);
+
+
+        switch (categoryName.toLowerCase()) {
+            case "order history and details":
+                waitUntilClickableAndClick(getWebElements(accountCategories).get(0));
+                break;
+            case "my credit slips":
+                waitUntilClickableAndClick(getWebElements(accountCategories).get(1));
+                break;
+            case "my addresses":
+                waitUntilClickableAndClick(getWebElements(accountCategories).get(2));
+                break;
+            case "my personal information":
+                waitUntilClickableAndClick(getWebElements(accountCategories).get(3));
+                break;
+            case "my wishlists":
+                waitUntilClickableAndClick(getWebElements(accountCategories).get(4));
+                break;
+        }
+
+        waitForLoad();
+    }
+
+    public void checkHistoryMenuUrl() {
+        waitForLoad();
+        waitUntilUrlContains(properties.getProperty("historyMenuUrl"));
+    }
+
+    public void checkTotalPriceOnHistory(String productPrice) {
+        waitUntilVisible(totalPriceOnHistory);
+        Assert.assertEquals(getText(totalPriceOnHistory), productPrice);
     }
 }

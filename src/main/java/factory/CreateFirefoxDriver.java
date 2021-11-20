@@ -34,10 +34,7 @@ public class CreateFirefoxDriver extends DriverFactory {
         firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
         myProfile.setAcceptUntrustedCertificates(true);
         myProfile.setAssumeUntrustedCertificateIssuer(false);
-        myProfile.setPreference("browser.privatebrowsing.autostart", true);
-        myProfile.setPreference("network.proxy.type", 0);
-        myProfile.setPreference("network.automatic-ntlm-auth.allow-proxies", true);
-        myProfile.setPreference("network.negotiate-auth.allow-proxies", true);
+
 
         return firefoxOptions;
     }

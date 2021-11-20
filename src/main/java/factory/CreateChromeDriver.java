@@ -39,21 +39,11 @@ public class CreateChromeDriver  extends  DriverFactory {
                 ,"--disable-infobars"
                 ,"--enable-automation"
                 ,"--window-size=1920,1080"
-                ,"--dns-prefetch-disable"
-                ,"disable-features=NetworkService"
                 ,"--ignore-certificate-errors"
                 ,"--ignore-ssl-errors"
                 ,"--disable-cache"
-                ,"--aggressive-cache-discard"
-                ,"--disable-application-cache"
-                ,"--disable-offline-load-stale-cache"
-                ,"--disk-cache-size=0"
-                ,"--dns-prefetch-disable"
                 ,"--silent"
-                ,"--disable-browser-side-navigation"
-                ,"--log-level=3"
-                ,"--disable-features=VizDisplayCompositor"
-                ,"--force-device-scale-factor=1");
+                ,"--log-level=3");
 
 
         chromeOptions.setExperimentalOption("useAutomationExtension", false);

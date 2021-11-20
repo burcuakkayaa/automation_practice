@@ -2,6 +2,7 @@ package stepDefinitions;
 
 
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class HomePageSteps extends BaseSteps {
@@ -15,6 +16,11 @@ public class HomePageSteps extends BaseSteps {
     @When("user clicks sign in option")
     public void user_clicks_sign_in_option() {
        homePage.clickSignInButton();
+    }
+
+    @When("user clicks account title")
+    public void userClicksAccountTitle() {
+        homePage.clickAccountTitle();
     }
 
 }

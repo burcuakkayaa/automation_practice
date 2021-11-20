@@ -12,6 +12,7 @@ public class HomePage extends BasePage {
     }
 
     private final static By singIn = By.xpath("//a[@class = 'login']");
+    private final static By accountTitle = By.xpath("//a[@class = 'account']");
 
     public void getHomePage() {
         getUrl();
@@ -21,9 +22,14 @@ public class HomePage extends BasePage {
 
     public void clickSignInButton() {
         waitUntilVisible(singIn);
-        waitUntilClickable(singIn);
+        waitUntilClickableAndClick(singIn);
         waitForLoad();
     }
 
 
+    public void clickAccountTitle() {
+        waitUntilVisible(accountTitle);
+        waitUntilClickableAndClick(accountTitle);
+        waitForLoad();
+    }
 }

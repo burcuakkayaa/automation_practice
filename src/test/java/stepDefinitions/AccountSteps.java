@@ -2,6 +2,7 @@ package stepDefinitions;
 
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
@@ -139,5 +140,30 @@ public class AccountSteps extends BaseSteps {
     @Then("user should see account categories on my account page")
     public void userShouldSeeAccountCategoriesOnMyAccountPage() {
         accountPage.checkAccountCategories();
+    }
+
+    @And("user should see account has already signed in")
+    public void userShouldSeeAccountHasAlreadySignedIn() {
+        accountPage.checkAccountHasAlreadySignedIn(name, surname);
+    }
+
+    @Given("user select {string} category")
+    public void userSelectCategory(String categoryOptionsName) {
+        accountPage.selectProductCategory(categoryOptionsName);
+    }
+
+    @When("user clicks {string} to category")
+    public void userClicksToCategory(String categoryName) {
+        accountPage.clickAccountCategory(categoryName);
+    }
+
+    @Then("user is on order history menu on account page")
+    public void userIsOnOrderHistoryMenuOnAccountPage() {
+        accountPage.checkHistoryMenuUrl();
+    }
+
+    @And("user checks total price on history menu")
+    public void userChecksTotalPriceOnHistoryMenu() {
+        accountPage.checkTotalPriceOnHistory(totalProductPrice);
     }
 }

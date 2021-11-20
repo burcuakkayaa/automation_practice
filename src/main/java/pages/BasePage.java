@@ -39,6 +39,7 @@ public class BasePage {
         driver.get(Constant.url);
     }
 
+
     public WebElement getWebElement(By locator) {
         WebElement element = null;
         return element = driver.findElement(locator);
@@ -50,10 +51,6 @@ public class BasePage {
         return webElementList = driver.findElements(locator);
     }
 
-    public void selectElementBySelectIndex(By locator, int index) {
-        Select select = new Select(getWebElement(locator));
-        select.selectByIndex(index);
-    }
 
     public void  selectElementBySelectValue(By locator, String value) {
         Select select = new Select(getWebElement(locator));
@@ -100,22 +97,10 @@ public class BasePage {
                 + "arguments[0].dispatchEvent(evt);", element);
     }
 
-    public void actionSendkey(String value) {
-
-        Actions actions = new Actions(driver);
-        actions.sendKeys(value).release().build().perform();
-    }
-
     public void sendKey(By locator, String value) {
         driver.findElement(locator).sendKeys(value);
     }
 
-    public void scrollElementCenterOfScreen (By locator) {
-        WebElement element = getWebElement(locator);
-        String scrollElementCenterOfScreen = "arguments[0].scrollIntoView({block: 'center',});";
-        JavascriptExecutor jse = (JavascriptExecutor) driver;
-        jse.executeScript(scrollElementCenterOfScreen, element);
-    }
 
     public void actionClick(By locator) {
         WebElement element = getWebElement(locator);
@@ -139,16 +124,6 @@ public class BasePage {
     }
 
 
-    public String getAttribute(WebElement element, String attributeName) {
-
-        return element.getAttribute(attributeName);
-    }
-
-    public void clearText(By locator) {
-        WebElement element = getWebElement(locator);
-        element.clear();
-    }
-
     public void findAndScrollElement(By locator, int scrollAmount) {
         WebElement element = getWebElement(locator);
         String scrollElementIntoMiddle = "var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);"
@@ -167,18 +142,32 @@ public class BasePage {
         jse.executeScript(scrollElementIntoMiddle, element);
     }
 
-    public void waitUntilClickable(By locator) {
+    public void waitUntilClickableAndClick(By locator) {
         Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(120))
                 .pollingEvery(Duration.ofMillis(10)).ignoring(StaleElementReferenceException.class)
                 .ignoring(NoSuchElementException.class);
         wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
     }
 
-    public void waitUntilClickable(WebElement element) {
+    public void waitUntilClickableAndClick(WebElement element) {
         Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(120))
                 .pollingEvery(Duration.ofMillis(10)).ignoring(StaleElementReferenceException.class)
                 .ignoring(NoSuchElementException.class);
         wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+    }
+
+    public void waitUntilClickable(By locator) {
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(120))
+                .pollingEvery(Duration.ofMillis(10)).ignoring(StaleElementReferenceException.class)
+                .ignoring(NoSuchElementException.class);
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    public void waitUntilClickable(WebElement element) {
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(120))
+                .pollingEvery(Duration.ofMillis(10)).ignoring(StaleElementReferenceException.class)
+                .ignoring(NoSuchElementException.class);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     public synchronized boolean waitUntilUrlContains(String expectedValue) {
@@ -210,6 +199,7 @@ public class BasePage {
         return true;
     }
 
+
     public void waitUntilVisible(By locator) {
         Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(80))
                 .pollingEvery(Duration.ofMillis(10)).ignoring(StaleElementReferenceException.class)
@@ -224,12 +214,6 @@ public class BasePage {
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    public void waitUntilInvisible(By locator) {
-        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(150))
-                .pollingEvery(Duration.ofMillis(10)).ignoring(StaleElementReferenceException.class)
-                .ignoring(NoSuchElementException.class);
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
-    }
 
     public void waitForLoad() {
 
@@ -249,5 +233,17 @@ public class BasePage {
 
     }
 
+    public void clickAndHold(WebElement element) {
+
+        Actions actions = new Actions(driver);
+        actions.moveToElement(element);
+        actions.clickAndHold().perform();
+    }
+
+    public Boolean checkElementIsDisplayed(WebElement element) {
+        Boolean flag = element.isDisplayed();
+
+        return flag;
+    }
 
 }
