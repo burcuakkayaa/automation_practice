@@ -4,11 +4,14 @@ import factory.DriverFactory;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
+import utils.ConfigReader;
 import utils.Constant;
 
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Properties;
 
 public class BasePage {
 
@@ -16,12 +19,20 @@ public class BasePage {
     private WebDriverWait jsWait;
     private JavascriptExecutor jsExec;
     private final int timeOut = 60;
+    public ConfigReader configReader;
+    public Properties properties;
 
 
-    public BasePage(WebDriver driver) {
+    public BasePage(WebDriver driver)  {
         this.driver = DriverFactory.getDriver();
         jsWait = new WebDriverWait(this.driver, 10);
         jsExec = (JavascriptExecutor) this.driver;
+        configReader = new ConfigReader();
+        try {
+            properties = configReader.initProp();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getUrl()  {
@@ -39,7 +50,7 @@ public class BasePage {
         return webElementList = driver.findElements(locator);
     }
 
-    public void selectElementBySelectIndex(WebDriver driver,By locator, int index) {
+    public void selectElementBySelectIndex(By locator, int index) {
         Select select = new Select(getWebElement(locator));
         select.selectByIndex(index);
     }
